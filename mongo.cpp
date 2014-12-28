@@ -22,7 +22,7 @@ std::string getCollections() {
     while (cursor->more()) {
         collBuilder << cursor->next().getField("name").wrap();
     }
-    return mongo::tojson(collBuilder.arr());
+    return collBuilder.arr().toString(true, true);
 }
 
 void addImage(std::string json, std::string collName) {
@@ -39,5 +39,5 @@ std::string getImages(std::string collName) {
     while (cursor->more()) {
         imgBuilder << cursor->next().getField("contour").wrap();
     }
-    return mongo::tojson(imgBuilder.arr());
+    return imgBuilder.arr().toString(true, true);
 }

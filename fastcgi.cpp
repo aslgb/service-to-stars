@@ -17,27 +17,27 @@
 class CollectionComponent : virtual public fastcgi::Component, virtual public fastcgi::Handler {
 
 public:
-        CollectionComponent(fastcgi::ComponentContext *context) : fastcgi::Component(context) {
-        }
+    CollectionComponent(fastcgi::ComponentContext *context) : fastcgi::Component(context) {
+    }
 
-        virtual void onLoad() {
-            initDB();
-        }
+    virtual void onLoad() {
+        initDB();
+    }
 
-        virtual void onUnload() {
-        }
+    virtual void onUnload() {
+    }
 
-        virtual void handleRequest(fastcgi::Request *request, fastcgi::HandlerContext *context) {
-		    if (request->getRequestMethod() == "POST") {
-                fastcgi::DataBuffer buf = request->requestBody();
-                std::string name;
-                buf.toString(name);
-                addCollection(name);
-		    } else {
-                std::stringbuf buf(getCollections().c_str());
-                request->write(&buf);
-		    }
-        }
+    virtual void handleRequest(fastcgi::Request *request, fastcgi::HandlerContext *context) {
+	    if (request->getRequestMethod() == "POST") {
+            fastcgi::DataBuffer buf = request->requestBody();
+            std::string name;
+            buf.toString(name);
+            addCollection(name);
+		} else {
+            std::stringbuf buf(getCollections().c_str());
+            request->write(&buf);
+		}
+    }
 };
 
 
@@ -46,7 +46,6 @@ class ImageComponent : virtual public fastcgi::Component, virtual public fastcgi
 public:
     ImageComponent(fastcgi::ComponentContext *context) : fastcgi::Component(context) {}
     virtual void onLoad() {
-        initDB();
     }
 
     virtual void onUnload() {}
