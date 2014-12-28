@@ -8,38 +8,36 @@ void initDB() {
     mongo::client::initialize();
 }
 
-void addCollection(std::string name) {
+void addCollection(std::string json) {
     mongo::DBClientConnection conn;
     conn.connect("localhost");
-    mongo::BSONObj obj = mongo::BSONObjBuilder().append("name", name.c_str()).obj();
-    conn.insert("stars.collections", obj);
+    conn.insert("stars.collections", mongo::fromjson(json));
 }
 
 std::string getCollections() {
     mongo::DBClientConnection conn;
     conn.connect("localhost");
-    std::string collections;
+    mongo::BSONArrayBuilder collBuilder;
     std::auto_ptr<mongo::DBClientCursor> cursor = conn.query("stars.collections");
     while (cursor->more()) {
-        collections.append(cursor->next().getField("name").toString());
+        collBuilder << cursor->next().getField("name").wrap();
     }
-    return collections;
+    return mongo::tojson(collBuilder.arr());
 }
 
-void addImage(std::string contour, std::string collName) {
+void addImage(std::string json, std::string collName) {
     mongo::DBClientConnection conn;
     conn.connect("localhost");
-    mongo::BSONObj obj = mongo::BSONObjBuilder().append("contour", contour.c_str()).obj();
-    conn.insert("stars." + collName, obj);
+    conn.insert("stars." + collName, mongo::fromjson(json));
 }
 
 std::string getImages(std::string collName) {
     mongo::DBClientConnection conn;
     conn.connect("localhost");
-    std::string images;
+    mongo::BSONArrayBuilder imgBuilder;
     std::auto_ptr<mongo::DBClientCursor> cursor = conn.query("stars." + collName);
     while (cursor->more()) {
-        images.append(cursor->next().getField("contour").toString());
+        imgBuilder << cursor->next().getField("contour").wrap();
     }
-    return images;
+    return mongo::tojson(imgBuilder.arr());
 }
