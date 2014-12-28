@@ -5,8 +5,8 @@ service-to-stars
 
 GET api/collections - получить список всех доступных коллекций     
 
-GET api/collections/ - получить изображения коллекции
+GET api/collections/name - получить изображения коллекции
 
 POST api/collections - добавить коллекцию    
 
-POST api/collections/ - вставить изображение в уже существующую коллекцию
+POST api/collections/name - вставить изображение в уже существующую коллекцию
